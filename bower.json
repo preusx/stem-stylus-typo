@@ -1,0 +1,26 @@
+{
+  "name": "stem-stylus-typo",
+  "version": "0.0.0",
+  "main": "./index.styl",
+  "author": "Alex Tkachenko <preusx.dev@gmail.com>",
+  "license": "MIT",
+  "description": "Typography mixins for stylus preprocessor",
+  "main": [
+    "index.styl"
+  ],
+  "dependencies": {
+    "stem-stylus-grid": "preusx/stem-stylus-grid#0.2.2",
+    "stem-stylus-utils": "preusx/stem-stylus-utils#0.4.10"
+  },
+  "devDependencies": {
+    "stem-stylus-grid": "preusx/stem-stylus-grid#0.2.2",
+    "stem-stylus-utils": "preusx/stem-stylus-utils#0.4.10"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
