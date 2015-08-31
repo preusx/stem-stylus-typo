@@ -1,0 +1,191 @@
+/**
+ * Variables
+ * ======================================================================== */
+
+$grid_prefix          ?= 'gr'
+$grid_column_count    ?= 12
+$grid_gutter_width    ?= 20px
+$grid_direction       ?= DIRECTION
+$grid_responsive      ?= true
+$grid_build           ?= false
+
+$grid_container_sizes = extend({
+        sm: 720px
+        md: 940px
+        lg: 1140px
+    }, $grid_container_sizes)
+
+/**
+ * Mixins
+ * ======================================================================== */
+
+gr_direction()
+    return $grid_direction == ltr ? unquote('left') : unquote('right')
+
+
+gr_percentage_width($count, $gutter=0)
+    if $count < 1
+        return $count * 100% - (.01 * $count)
+
+    $container_width = 100% - (unit($gutter) == '%' ? ($count - 1) * $gutter : 0)
+
+    if unit($container_width % $count, '') is 0
+        return ($container_width / $count)
+    else
+        return ($container_width / $count) - (.01 / $count)
+
+
+gr_size($size, $base=$grid_column_count)
+    if $size < 1
+        return gr_percentage_width($size)
+
+    return gr_percentage_width($base) * $size
+
+
+gr-block-columns($s_desktop, $s_small=null, $s_xsmall = 1,\
+        $gutter=$grid_gutter_width, $g=$gutter, $s='item')
+    $s_small = $s_desktop unless $s_small
+    $percentage_gutter = unit($g) == '%' ? $g : 0
+
+    @extends $clearfix
+
+    &{$bem_es}
+        if unit($g) != '%' && $g > 0
+            &inner
+                @extends $clearfix
+
+                margin-left -0.5 * $g
+                margin-right -0.5 * $g
+
+        &{$s}
+            display block
+            float gr_direction()
+            min-height 1px
+
+            if $grid_responsive
+                +media('desktop')
+                    width gr_percentage_width($s_desktop, $percentage_gutter)
+
+                +media('sm')
+                    width gr_percentage_width($s_small, $percentage_gutter)
+
+                +media('xs')
+                    width gr_percentage_width($s_xsmall, $percentage_gutter)
+            else
+                // without media suport
+                width gr_percentage_width($s_desktop, $percentage_gutter)
+
+            if $g > 0
+                if unit($g) != '%'
+                    $g /= 2
+                    padding-left $g
+                    padding-right $g
+                else
+                    margin-left $g
+
+                    &:first-child,
+                    &:nth-child({'' + $s_desktop + 'n+1'})
+                        margin-left 0
+
+
+gr-sidebar($s_width, $position=gr_direction(), $offset=0, $names=('sidebar' 'content'))
+    if is_string($names)
+        $names = ($names 'content')
+
+    // Elements
+    &{$bem_es}
+        &inner,
+        &{$names[0]},
+        &{$names[1]}
+            position relative
+
+        &inner
+            @extends $clearfix
+
+            margin-{$position} $s_width
+
+        &{$names[0]}
+            float unquote($position)
+            width $s_width
+            margin-{$position} -1 * $s_width
+
+        &{$names[1]}
+            display inline-block
+            padding-{$position} $offset if $offset
+            width 100%
+
+
+gr-build($count=$grid_column_count, $gutter=$grid_gutter_width,
+        $responsive=$grid_responsive)
+    $gutter /= 2
+    $selector = selector('&')
+    $ps = $bem_ps
+    $ms = $bem_ms
+
+    if !$selector || $selector == '.'
+        $selector = '.'
+        $ps = ''
+        // $ms = '.'
+
+    // Blocks
+    /{$selector}{$ps}
+        &w
+            for $i in 1..$count
+                &{$i}
+                    if $responsive
+                        +cache($selector + $ps + 'grid-' + 'w')
+                            +media-respond($bem_ms + '%s', true)
+                                /{$selector}{$ps}col&
+                                    float gr_direction()
+
+                        +media-respond($bem_ms + '%s', true)
+                            width gr_size($i, $count)
+
+                    else
+                        width gr_size($i, $count)
+
+        &o
+            for $i in 1..$count
+                &{$i}
+                    if $responsive
+                        +media-respond($bem_ms + '%s', true)
+                            margin-left gr_size($i, $count)
+
+                    else
+                        margin-left gr_size($i, $count)
+
+
+        &container
+            display block
+            margin-x auto
+            padding-x $gutter
+
+            if $responsive
+                for $bp, $size in $grid_container_sizes
+                    +media($bp)
+                        width $size + $gutter * 2
+            else
+                width: $grid_container_sizes.md
+
+        &row
+            @extends $clearfix
+
+            display block
+            padding-left 0
+            padding-right 0
+            margin-left -1 * $gutter
+            margin-right -1 * $gutter
+
+            list-style none
+
+        &col
+            display block
+            min-height 1px
+
+            padding-left $gutter
+            padding-right $gutter
+
+
+if $grid_build
+    .{$grid_prefix}
+        gr-build()

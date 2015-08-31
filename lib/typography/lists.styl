@@ -1,0 +1,84 @@
+/* ========================================================================
+ * Lists
+ * ======================================================================== */
+
+@require 'base'
+@require 'paragraphs'
+
+
+/**
+ * Styles
+ * ======================================================================== */
+
+/**
+ * Definition list
+ */
+// List
+.{$typography_prefix}dl,
+dl
+    @extends .{$typography_prefix}p
+
+    /.{$typography_prefix}dl{$bem_ms}horizontal
+        @extends $clearfix
+
+        & .{$typography_prefix}dt,
+        & dt
+            float left
+            clear left
+            width 18em
+            overflow hidden
+
+            text-align right
+            text-overflow ellipsis
+            white-space nowrap
+
+        & .{$typography_prefix}dd,
+        & dd
+            margin-left 19em
+
+// Title
+.{$typography_prefix}dt
+dt
+    font-weight bold
+
+// Description
+.{$typography_prefix}dd
+dd
+    margin-left 0
+
+
+/**
+ * Ordered and unordered list
+ */
+.{$typography_prefix}ul,
+ul,
+.{$typography_prefix}ol,
+ol
+    @extends .{$typography_prefix}p
+
+    padding-left 2em
+
+    /.{$typography_prefix}ul,
+    /.{$typography_prefix}ol
+        &{$bem_ms}
+            &unstyled
+                padding-left 0
+
+                list-style none
+
+            &inline
+                padding-left 0
+                margin-left: 0 - $space.xs
+
+                list-style none
+
+                & > li
+                    display inline-block
+
+                    padding: 0 $space.xs
+
+    & > li
+        & > ul,
+        & > ol
+            margin-top 0
+            margin-bottom 0

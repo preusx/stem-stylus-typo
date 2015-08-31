@@ -1,0 +1,49 @@
+grid_line($font_size, $line=null)
+    $grid = grid-settings()
+    $line = $grid.line if $line == null
+
+    return grid_height(a_ceil($font_size * $line))
+
+
+grid-line($font_size=null, $line=null)
+    $font_size = @font-size if $font_size == null
+
+    line-height grid_line($font_size, $line)
+
+/**
+ * Tests
+ * ======================================================================== */
+
+// @it Grid line
+
+for $i in (10px 12px 14px 16px 18px 24px 30px 40px)
+    .block{$i}
+        grid-line($i)
+
+// @expects
+.block10{line-height:12px}
+.block12{line-height:18px}
+.block14{line-height:18px}
+.block16{line-height:24px}
+.block18{line-height:24px}
+.block24{line-height:30px}
+.block30{line-height:36px}
+.block40{line-height:48px}
+
+
+// @it Grid line: at-rule
+
+for $i in (10px 12px 14px 16px 18px 24px 30px 40px)
+    .block{$i}
+        font-size $i
+        grid-line()
+
+// @expects
+.block10{font-size:10px;line-height:12px}
+.block12{font-size:12px;line-height:18px}
+.block14{font-size:14px;line-height:18px}
+.block16{font-size:16px;line-height:24px}
+.block18{font-size:18px;line-height:24px}
+.block24{font-size:24px;line-height:30px}
+.block30{font-size:30px;line-height:36px}
+.block40{font-size:40px;line-height:48px}

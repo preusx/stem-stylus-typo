@@ -1,0 +1,49 @@
+/* ========================================================================
+ * Links
+ * ======================================================================== */
+
+@require 'base'
+@require '../../modules/utils/atom/bem'
+
+
+/**
+ * Styles
+ * ======================================================================== */
+
+.{$typography_prefix}link,
+a
+    font-family inherit
+    text-decoration underline
+
+    cursor pointer
+
+    color: $th.color.link
+    transition-property color, text-decoration
+
+    &:hover,
+    &:visited:hover
+        text-decoration none
+
+        color: darken($th.color.link, 40%)
+
+    &:active
+        color: $th.color.red
+
+    &:visited
+        color: desaturate($th.color.link, 50%)
+
+
+.{$typography_prefix}link
+    text-decoration none
+
+    &{$bem_ms}
+        &on-dark
+            &,
+            &:link,
+            &:visited,
+            &:active
+                color #fff
+
+            &:hover,
+            &:visited:hover
+                color th_color(#fff, secondary)

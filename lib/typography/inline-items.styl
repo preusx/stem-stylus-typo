@@ -1,0 +1,92 @@
+/* ========================================================================
+ * Inline styling
+ * ======================================================================== */
+
+@require 'base'
+@require 'paragraphs'
+
+
+/**
+ * Styles
+ * ======================================================================== */
+
+// Separator line
+hr
+    @extends .{$typography_prefix}p
+
+    box-sizing content-box
+    height 0
+
+    border 0
+    border-top 1px solid th_color(text, divider)
+
+// Marked text
+mark
+    padding-left: $space.xs
+    padding-right: $space.xs
+
+    color inherit
+    background #ff0
+
+// Small text
+small
+    font-size 85%
+    line-height 1
+
+// Superposition Subposition
+sub,
+sup
+    font-size 75%
+    line-height 0
+    position relative
+
+sup
+    top -0.5em
+
+sub
+    bottom -0.25em
+
+// Bold
+b,
+strong
+    font-weight bold
+
+// Italic
+i,
+em,
+var,
+dfn // Definition is usually marking with italic font style
+    font-style italic
+
+// Monospace
+tt,
+code,
+output,
+.{$typography_prefix}pre,
+pre,
+samp,
+kbd
+    font-family: $font_family.mono
+
+// Line through
+s,
+strike,
+del
+    text-decoration line-through
+
+// Underlined
+u,
+ins
+    text-decoration underline
+
+// Abbreviation
+abbr
+    border-bottom 1px dashed th_color(text, divider)
+
+    cursor help
+
+// Address
+address
+    @extends .{$typography_prefix}p
+
+    font-style normal

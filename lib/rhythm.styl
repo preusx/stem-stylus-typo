@@ -1,0 +1,280 @@
+@require 'convert'
+@require 'around'
+@require 'at-partial'
+
+/**
+ * Variables
+ * ======================================================================== */
+
+$rhythm_font_size       ?= $base_font_size
+$rhythm_line_height     ?= ($base_line_height_ratio 1.0)
+$rhythm_font_size_scale ?= 1.4
+$rhythm_debug           ?= DEBUG
+$rhythm_is_strict       ?= false
+
+
+/**
+ * Mixins
+ * ======================================================================== */
+
+rt_is_strict()
+    return !!$rhythm_is_strict
+
+
+rt_get_scale($point)
+    return $rhythm_font_size_scale ** $point
+
+
+rt_get_line_height($point=1, $line_height=$rhythm_line_height[0])
+    // if $rhythm_is_strict
+    //     return a_ceil(a_ceil($rhythm_line_height[0] * $rhythm_font_size) *\
+    //         $point)
+    // else
+    //     return 1em * $rhythm_line_height[0]
+    return a_ceil(a_ceil($line_height * $rhythm_font_size) * $point)
+
+
+rt_get_scaled_line_height($point=1, $line_height=$rhythm_line_height[0])
+    $font_size = rt_get_font_size($point)
+
+    if $rhythm_is_strict
+        $l_point = ceil(rt_get_scale($point))
+        $l_height = rt_get_line_height($l_point - 1, $line_height)
+
+        if $l_height / $font_size < $rhythm_line_height[1]
+            $l_height = rt_get_line_height($l_point, $line_height)
+
+        return $l_height
+    else
+        return a_ceil($font_size * $line_height)
+
+
+rt_get_font_size($point=1)
+    return a_floor(rt_get_scale($point) * $rhythm_font_size)
+
+
+rt-offset($size, $side, $is_in=false)
+    $property = $is_in ? 'padding' : 'margin'
+    $side = $side ? 'top' : 'bottom'
+    $font_size = $rhythm_font_size
+    $value = a_ceil(rt_get_line_height() * $size)
+
+    {$property}-{$side} to_rem($value, $font_size)
+
+
+rt-offset-of($point, $of, $from=$rhythm_line_height[0], $to=$from)
+    if $rhythm_is_strict
+        $from = $rhythm_line_height[0]
+        $to = $rhythm_line_height[0]
+
+    $position = @position
+
+    if $position != 'static' && $position != null
+        $offset = floor(to_px((rt_get_font_size($of) -\
+            rt_get_font_size($point)) / 3))
+        $offset = @top ? @top + $offset : $offset
+
+        position relative unless $position
+        top to_rem($offset)
+    else
+        $h_of = ceil(to_px(rt_get_scaled_line_height($of, $to),\
+            rt_get_font_size($of)))
+        $h_point = ceil(to_px(rt_get_scaled_line_height($point, $from),\
+            rt_get_font_size($point)))
+        $offset = ceil(($h_of - $h_point) / $rhythm_line_height[0])
+
+        padding-top to_rem($offset)
+        padding-bottom to_rem($h_of - $h_point - $offset)
+
+        &:first-line
+            line-height to_rem(rt_get_scaled_line_height($point, $from))
+
+
+rt-offset-top($size, $is_in=false)
+    rt-offset($size, true, $is_in)
+
+
+rt-offset-bottom($size, $is_in=false)
+    rt-offset($size, false, $is_in)
+
+// Alias for: rt-offset-bottom
+rt-offset-bot($size, $is_in=false)
+    rt-offset($size, false, $is_in)
+
+
+rt-offset-both($size, $is_in=false)
+    rt-offset-top $size, $is_in
+    rt-offset-bot $size, $is_in
+
+
+rt-line($point=0, $of=0, $from=$rhythm_line_height[0], $to=$from)
+    if $rhythm_is_strict
+        $from = $rhythm_line_height[0]
+        $to = $rhythm_line_height[0]
+
+    $font_size = rt_get_font_size($point, $from)
+    $l_height = rt_get_scaled_line_height($point, $from)
+
+    font-size to_rem($font_size)
+
+    if $of > $point
+        if $rhythm_is_strict
+            $from = $rhythm_line_height[0]
+            $to = $rhythm_line_height[0]
+
+        rt-offset-of($point, $of, $from, $to)
+
+        line-height to_rem(rt_get_scaled_line_height($of, $to))
+    else
+        line-height to_rem($l_height)
+
+
+rt-paragraph($size=0, $offset=1, $child=true)
+    rt-offset-both $offset
+    rt-line($size)
+
+    if $child
+        +cache('rt-paragraph-child')
+            &:first-child
+                margin-top 0
+
+            &:last-child
+                margin-bottom 0
+
+
+/**
+ * Rhythm border ofsset.
+ *
+ * Vertically inlining the block with other content by removing border width.
+ *
+ * @param {unit} [$width]   - Border width.
+ * @param {unit} [$where]   - Border vertical position: 1 - top, 2 - bottom,
+ *                            3 - both
+ */
+rt-border-margin($width, $where)
+    $width = to_px($width)
+    $mt = at_partial('margin-top')
+    $mb = at_partial('margin-bottom')
+
+    if byte_and($where, 1) // top
+        margin-top to_unit(to_px($mt) - $width, unit($mt))
+    if byte_and($where, 2) // bottom
+        margin-bottom to_unit(to_px($mb) - $width, unit($mb))
+
+    // $pt = at_partial('padding-top') unless $mt
+    // $pb = at_partial('padding-bottom') unless $mb
+
+    // if $where & 1 // top
+    //     {$mt ? 'margin' : 'padding'}-top ($mt ? $mt : $pt) - $width
+    // if $where & 2 // bottom
+    //     {$mb ? 'margin' : 'padding'}-bottom ($mb ? $mb : $pb) - $width
+
+
+rt-border($width, $style, $color)
+    rt-border-margin($width, 3)
+
+    border $width $style $color
+
+
+rt-border-top($width, $style, $color)
+    rt-border-margin($width, 1)
+
+    border-top $width $style $color
+
+
+rt-border-top-width($width, $style, $color)
+    rt-border-margin($width, 1)
+
+    border-top-width $width
+
+
+rt-border-bottom($width, $style, $color)
+    rt-border-margin($width, 2)
+
+    border-bottom $width $style $color
+
+// Alias for: rt-border-bottom
+rt-border-bot($width, $style, $color)
+    rt-border-bottom($width, $style, $color)
+
+
+rt-border-bottom-width($width)
+    rt-border-margin($width, 2)
+
+    border-bottom-width $width
+
+// Alias for: rt-border-bottom-width
+rt-border-bot-width($width)
+    rt-border-bottom-width($width)
+
+
+/**
+ * Rhythm Inline.
+ *
+ * Vertically inlining the block with other content.
+ *
+ * @param {unit} [$line_height]   - Line height of the parent.
+ * @param {unit} [$height]        - Height of the block
+ */
+rt-inline($line_height=null, $height=null, $auto=false, $a=$auto)
+    $line_height = rt_get_line_height() unless $line_height
+    $height = @height unless $height
+
+    if $a && !$height
+        $what = ('padding' 'margin')
+        $height = to_px(@line-height)
+
+        for $i in $what
+            $height += to_px(at_partial($i + '-top')) + to_px(at_partial($i + '-bottom'))
+
+        $height += to_px(at_partial('border-top-width')) + to_px(at_partial('border-bottom-width'))
+
+    $offset = a_ceil(($height -\
+        to_px($line_height, $rhythm_font_size)) / 2)
+
+    // FUCKING FUCK
+    // There is some troubles with coercing $offset variable.
+    _mb($some)
+        margin-bottom $some
+
+    display inline-block unless @display
+    position relative
+    top to_rem(0 - $offset)
+    _mb(2 * @top)
+
+    vertical-align middle
+
+
+
+rt-debug()
+    $r_height = rt_get_line_height()
+
+    html:before
+        display block
+        position absolute
+        top 0
+        left 0
+        width 100%
+        height 10050px
+        z-index -1
+
+        no-select()
+
+        background-image linear-gradient(\
+            0deg,\
+            rgba(#09f, .065) $r_height - 1px,\
+            rgba(#09f, .25)  $r_height - 1px\
+            )
+        background-repeat repeat-all
+        background-size 1px $r_height
+
+        content ''
+
+
+/**
+ * Style
+ * ======================================================================== */
+
+if $rhythm_debug
+    if $rhythm_is_strict
+        rt-debug()

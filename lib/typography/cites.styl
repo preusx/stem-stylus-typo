@@ -1,0 +1,61 @@
+/* ========================================================================
+ * Cites
+ * ======================================================================== */
+
+@require 'base'
+@require 'paragraphs'
+
+/**
+ * Styles
+ * ======================================================================== */
+
+/**
+ * Blockquote element
+ */
+blockquote
+    &,
+    & > p
+        @extends .{$typography_prefix}p
+        @extends .{$typography_prefix}p{$bem_ms}lead
+
+    display block
+    padding-left 1rem
+    margin-left 0
+    margin-right 0
+
+    border-left 2px solid th_color(text, divider)
+
+    & .{$typography_prefix}cite
+    & cite
+        display block
+
+        font-size: $font_size.body
+
+        color inherit
+
+/**
+ * Cite
+ */
+cite
+    font-style normal
+
+/**
+ * Quotes
+ */
+q
+    display inline
+
+    font-style italic
+
+    for $lang, $qts in $typography_quotes
+        if $lang == '_'
+            quotes $qts
+        else
+            html[lang={$lang}] &
+                quotes $qts
+
+    &:before
+        content open-quote
+
+    &:after
+        content close-quote

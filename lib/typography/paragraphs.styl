@@ -1,0 +1,33 @@
+/* ========================================================================
+ * Paragraphs
+ * ======================================================================== */
+
+@require 'base'
+
+
+/**
+ * Styles
+ * ======================================================================== */
+
+.{$typography_prefix}p,
+p
+    margin-y: $space.line
+
+    font-size: $font_size.body
+    line-height: $line_height.body
+
+    +cache('typography-paragraph-child')
+        &:first-child
+            margin-top 0
+
+        &:last-child
+            margin-bottom 0
+
+
+.{$typography_prefix}p{$bem_ms}
+    &lead
+        @extends .{$typography_prefix}p
+
+        font-size: $font_size.lead
+
+        // font-weight 300

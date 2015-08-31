@@ -1,0 +1,44 @@
+/* ========================================================================
+ * Code
+ * ======================================================================== */
+
+@require 'base'
+@require 'paragraphs'
+
+/**
+ * Styles
+ * ======================================================================== */
+
+/**
+ * Inline code
+ */
+code,
+kbd
+    padding-left: $space.xs
+    padding-right: $space.xs
+
+    border-radius 4px
+
+    font-size: $font_size.small
+
+    background-color th_color(text, divider)
+
+
+/**
+ * Preformated text
+ */
+pre
+    @extends .{$typography_prefix}p
+
+    display block
+
+    padding-left: $space.s
+
+    border 1px solid th_color(text, divider)
+    border-radius 4px
+
+    font-size: $font_size.small
+    word-break break-all
+    word-wrap break-word
+
+    background-color th_color(text, relief)
