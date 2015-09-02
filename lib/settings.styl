@@ -1,0 +1,21 @@
+/**
+ * Variables
+ * ======================================================================== */
+
+block_storage('__stem__typo-settings', {
+        base:    $root_font_size,
+        line:    1.2,
+        scale:   1.333                  // "Prefect fourth" scale
+
+        responsive:  true
+    }, true)
+
+
+/**
+ * Mixins
+ * ======================================================================== */
+
+typo-settings($data=false, $default=false, fallback=false)
+    $temp = block_storage('__stem__typo-settings', $data, $default, fallback)
+
+    return $temp

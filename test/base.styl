@@ -1,0 +1,57 @@
+// @describe Typography basis
+
+// @it Scale function
+
+for $i in (1 2 3 4 5 10px 20px 30px 40px)
+    .block
+        font-size typo_scale($i)
+
+// @expects
+.block{font-size:21px}
+.block{font-size:28px}
+.block{font-size:38px}
+.block{font-size:51px}
+.block{font-size:67px}
+
+.block{font-size:12px}
+.block{font-size:21px}
+.block{font-size:38px}
+.block{font-size:51px}
+
+
+// @it Line
+
+for $i in (1 2 3 4 5 10px 20px 30px 40px)
+    .block
+        typo-line($i)
+
+// @expects
+.block{line-height:30px}
+.block{line-height:36px}
+.block{line-height:48px}
+.block{line-height:66px}
+.block{line-height:84px}
+.block{line-height:18px}
+.block{line-height:30px}
+.block{line-height:48px}
+.block{line-height:66px}
+
+
+// @it Inline
+
+$list = (1 2 3 4 5 10px 20px 30px 40px)
+
+for $i in 0...(length($list) - 1)
+    .block
+        typo-inline($list[$i], $list[$i+1])
+
+// @expects
+.block{line-height:30px}
+.block{line-height:36px}
+.block{line-height:48px}
+.block{line-height:66px}
+.block{line-height:84px}
+.block{line-height:18px}
+.block{line-height:30px}
+.block{line-height:48px}
+.block{line-height:66px}

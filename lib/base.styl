@@ -1,0 +1,129 @@
+/**
+ * Mxins
+ * ======================================================================== */
+
+typo_scale($size=0)
+    $typo = typo-settings()
+    $unit = unit($size)
+
+    if $unit != ''
+        $px_size = to_px($size)
+        $size = $px_size / $typo.base
+        $size = ceil(math($size, 'log') / math($typo.scale, 'log'))
+
+    return round($typo.base * ($typo.scale ** $size))
+
+
+typo_line($font_size, $line=null)
+    $typo = typo-settings()
+    $line = $typo.line if $line == null
+    $font_size = typo_scale($font_size)
+
+    return grid_height($font_size * $line)
+
+
+/**
+ * Opentype ligatures
+ *
+ * The vast majority of fonts contain lowercase and uppercase alphabets,
+ * numerals, punctuation and accents.
+ * Many professionally-designed fonts also contain ligatures, alternative
+ * characters, smallcaps, different kinds of numbers, and sometimes much more
+ * besides.
+ * This enables it.
+ *
+ * Source: http://www.newnet-soft.com/blog/csstypography
+ * Additional: http://blog.fontdeck.com/post/15777165734/opentype-1
+ */
+typo-open-type-ligatures()
+    -moz-font-feature-settings    "liga=1, dlig=1"
+    -ms-font-feature-settings     "liga", "dlig"
+    -webkit-font-feature-settings "liga", "dlig"
+    -o-font-feature-settings      "liga", "dlig"
+    font-feature-settings         "liga", "dlig"
+
+
+/**
+ * Text Selection
+ */
+typo-selection()
+  &::-moz-selection
+    {block}
+
+  &::selection
+    {block}
+
+
+/**
+ * Hyphenation
+ *
+ * Hyphenation is the better word-break. It’s locale aware, and inserts the
+ * hyphen character at the correct place, when breaking the words. This is
+ * especially important in responsive designs. It will save you from a lot of
+ * ragged lines. And, no need anymore for clunky & slow Javascript hyphenation
+ * fallbacks.
+ *
+ * Source: http://www.newnet-soft.com/blog/csstypography
+ */
+typo-hyphenation()
+    -ms-word-break break-all
+        word-break break-all
+        word-break break-word // webkit
+
+    -webkit-hyphens auto
+       -moz-hyphens auto
+        -ms-hyphens auto
+         -o-hyphens auto
+            hyphens auto // none, auto, <number>
+
+    -webkit-hyphenate-before 2
+    -webkit-hyphenate-after  3
+    hyphenate-lines          3
+
+
+typo-line($font_size=null, $line=null)
+    $font_size = @font-size if $font_size == null
+
+    line-height typo_line($font_size, $line)
+
+
+typo-inline($to, $from)
+    // $f  -  Font size
+    // $l  -  Line height
+    // $sp -  Empty space difference
+
+    if is_array($from)
+        $f_f = typo_scale($from[0])
+        $l_f = typo_line($from[1])
+    else
+        $f_f = typo_scale($from)
+        $l_f = typo_line($from)
+
+    if is_array($to)
+        $f_t = typo_scale($to[0])
+        $l_t = typo_line($to[1])
+    else
+        $f_t = typo_scale($to)
+        $l_t = typo_line($to)
+
+    $sp_f = $l_f - $f_f
+    $sp_t = $l_t - $f_t
+
+    $sp = max($sp_f, $sp_t)
+    $sp -= min($sp_f, $sp_t)
+
+    // $pt = at_partial('padding-top')
+    // $pb = at_partial('padding-bottom')
+
+    padding-top floor($sp / 2) + abs($f_f - $f_t)
+    padding-bottom ceil($sp / 2)
+
+
+typo-paragraph($font_size=null)
+    $typo = typo-settings()
+    $font_size = $typo.base if $font_size == null
+
+    grid-offset-v(typo_line($font_size))
+
+    font-size: $font_size
+    typo-line($font_size)

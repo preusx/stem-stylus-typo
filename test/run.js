@@ -1,10 +1,14 @@
 var testRunnerConfig = {
-  describe: 'Stem stylus bem',
+  describe: 'Stem stylus typography',
   stylus: {
     use: function plugin(stylus) {
       stylus.include(__dirname + '../');
     },
-    import: ['../bower_components/stem-stylus-utils', '../bem']
+    import: [
+      '../bower_components/stem-stylus-utils',
+      '../bower_components/stem-stylus-grid',
+      '../index'
+    ]
   }
 }
 
