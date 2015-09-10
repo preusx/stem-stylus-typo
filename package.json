@@ -18,7 +18,7 @@
     "test": "node ./test/run.js"
   },
   "devDependencies": {
-    "stylus": "^0.52.0",
+    "stylus": "^0.52.4",
     "stylus-test-runner": "git://github.com/preusx/stylus-test-runner.git#master"
   },
   "dependencies": {

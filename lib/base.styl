@@ -17,7 +17,9 @@ typo_scale($size=0)
 typo_line($font_size, $line=null)
     $typo = typo-settings()
     $line = $typo.line if $line == null
-    $font_size = typo_scale($font_size)
+
+    if unit($font_size) == ''
+        $font_size = typo_scale($font_size)
 
     return grid_height($font_size * $line)
 
@@ -82,29 +84,39 @@ typo-hyphenation()
 
 
 typo-line($font_size=null, $line=null)
-    $font_size = @font-size if $font_size == null
+    if $font_size == null
+        $font_size = @font-size
+    else
+        if unit($font_size) == ''
+            $font_size = typo_scale($font_size)
+
+        font-size $font_size
 
     line-height typo_line($font_size, $line)
 
 
-typo-inline($to, $from)
+typo-inline($from, $to)
     // $f  -  Font size
     // $l  -  Line height
     // $sp -  Empty space difference
 
-    if is_array($from)
-        $f_f = typo_scale($from[0])
-        $l_f = typo_line($from[1])
-    else
-        $f_f = typo_scale($from)
-        $l_f = typo_line($from)
+    if $to
+        if is_array($from)
+            $f_f = unit($from[0]) == '' ? typo_scale($from[0]) : to_px($from[0])
+            $l_f = unit($from[1]) == '' ? grid_height($from[1]) : to_px($from[1])
+        else
+            $f_f = unit($from) == '' ? typo_scale($from) : to_px($from)
+            $l_f = typo_line($from)
 
-    if is_array($to)
-        $f_t = typo_scale($to[0])
-        $l_t = typo_line($to[1])
+        if is_array($to)
+            $f_t = unit($to[0]) == '' ? typo_scale($to[0]) : to_px($to[0])
+            $l_t = unit($to[1]) == '' ? grid_height($to[1]) : to_px($to[1])
+        else
+            $f_t = unit($to) == '' ? typo_scale($to) : to_px($to)
+            $l_t = typo_line($to)
     else
-        $f_t = typo_scale($to)
-        $l_t = typo_line($to)
+        $from = at_property('font-size')
+        $to = $from
 
     $sp_f = $l_f - $f_f
     $sp_t = $l_t - $f_t
@@ -112,18 +124,17 @@ typo-inline($to, $from)
     $sp = max($sp_f, $sp_t)
     $sp -= min($sp_f, $sp_t)
 
-    // $pt = at_partial('padding-top')
-    // $pb = at_partial('padding-bottom')
+    $pt = at_partial('padding-top')
+    $pb = at_partial('padding-bottom')
 
-    padding-top floor($sp / 2) + abs($f_f - $f_t)
-    padding-bottom ceil($sp / 2)
+    padding-top $pt + floor($sp / 2) + abs($f_f - $f_t)
+    padding-bottom $pb + ceil($sp / 2)
 
 
 typo-paragraph($font_size=null)
     $typo = typo-settings()
     $font_size = $typo.base if $font_size == null
 
-    grid-offset-v(typo_line($font_size))
+    grid-offset-v(typo_line($typo.base))
 
-    font-size: $font_size
     typo-line($font_size)
