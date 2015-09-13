@@ -4,7 +4,7 @@
 
 for $i in (1 2 3 4 5 10px 20px 30px 40px)
     .block
-        font-size typo_scale($i)
+        font-size typo_scaled($i)
 
 // @expects
 .block{font-size:21px}
@@ -62,7 +62,7 @@ $list = (1 2 3 4 5 10px 20px 30px 40px)
 
 for $i in 0...(length($list) - 1)
     .block
-        typo-paragraph($list[$i], $list[$i+1])
+        typo-paragraph($list[$i])
 
 // @expects
 .block{margin-top:24px;margin-bottom:24px;font-size:21px;line-height:30px}

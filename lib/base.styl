@@ -2,24 +2,41 @@
  * Mxins
  * ======================================================================== */
 
-typo_scale($size=0)
+typo_font_scale()
+    $typo = typo-settings()
+
+    return $typo.scale
+
+
+typo_line_scale($line='base')
+    $typo = typo-settings()
+
+    if is_string($line)
+        return $typo.line[$line]
+    else if is_unit($line)
+        return $line
+    else
+        return $typo.line.base
+
+
+typo_scaled($size=0)
     $typo = typo-settings()
     $unit = unit($size)
 
     if $unit != ''
         $px_size = to_px($size)
         $size = $px_size / $typo.base
-        $size = ceil(math($size, 'log') / math($typo.scale, 'log'))
+        $size = ceil(math($size, 'log') / math(typo_font_scale(), 'log'))
 
-    return round($typo.base * ($typo.scale ** $size))
+    return round($typo.base * (typo_font_scale() ** $size))
 
 
 typo_line($font_size, $line=null)
     $typo = typo-settings()
-    $line = $typo.line if $line == null
+    $line = typo_line_scale($line)
 
     if unit($font_size) == ''
-        $font_size = typo_scale($font_size)
+        $font_size = typo_scaled($font_size)
 
     return grid_height($font_size * $line)
 
@@ -88,7 +105,7 @@ typo-line($font_size=null, $line=null)
         $font_size = @font-size
     else
         if unit($font_size) == ''
-            $font_size = typo_scale($font_size)
+            $font_size = typo_scaled($font_size)
 
         font-size $font_size
 
@@ -102,17 +119,17 @@ typo-inline($from, $to)
 
     if $to
         if is_array($from)
-            $f_f = unit($from[0]) == '' ? typo_scale($from[0]) : to_px($from[0])
+            $f_f = unit($from[0]) == '' ? typo_scaled($from[0]) : to_px($from[0])
             $l_f = unit($from[1]) == '' ? grid_height($from[1]) : to_px($from[1])
         else
-            $f_f = unit($from) == '' ? typo_scale($from) : to_px($from)
+            $f_f = unit($from) == '' ? typo_scaled($from) : to_px($from)
             $l_f = typo_line($from)
 
         if is_array($to)
-            $f_t = unit($to[0]) == '' ? typo_scale($to[0]) : to_px($to[0])
+            $f_t = unit($to[0]) == '' ? typo_scaled($to[0]) : to_px($to[0])
             $l_t = unit($to[1]) == '' ? grid_height($to[1]) : to_px($to[1])
         else
-            $f_t = unit($to) == '' ? typo_scale($to) : to_px($to)
+            $f_t = unit($to) == '' ? typo_scaled($to) : to_px($to)
             $l_t = typo_line($to)
     else
         $from = at_property('font-size')
