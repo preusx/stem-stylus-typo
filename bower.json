@@ -10,11 +10,11 @@
   ],
   "dependencies": {
     "stem-stylus-grid": "preusx/stem-stylus-grid#0.2.2",
-    "stem-stylus-utils": "preusx/stem-stylus-utils#0.4.11"
+    "stem-stylus-utils": "preusx/stem-stylus-utils#0.4.12"
   },
   "devDependencies": {
     "stem-stylus-grid": "preusx/stem-stylus-grid#0.2.2",
-    "stem-stylus-utils": "preusx/stem-stylus-utils#0.4.11"
+    "stem-stylus-utils": "preusx/stem-stylus-utils#0.4.12"
   },
   "ignore": [
     "**/.*",
