@@ -9,12 +9,14 @@
     "index.styl"
   ],
   "dependencies": {
-    "stem-stylus-grid": "preusx/stem-stylus-grid#0.2.2",
-    "stem-stylus-utils": "preusx/stem-stylus-utils#0.4.12"
+    "stem-stylus-bem": "preusx/stem-stylus-bem#0.1.6",
+    "stem-stylus-grid": "preusx/stem-stylus-grid#0.2.4",
+    "stem-stylus-utils": "preusx/stem-stylus-utils#0.4.15"
   },
   "devDependencies": {
-    "stem-stylus-grid": "preusx/stem-stylus-grid#0.2.2",
-    "stem-stylus-utils": "preusx/stem-stylus-utils#0.4.12"
+    "stem-stylus-bem": "preusx/stem-stylus-bem#0.1.6",
+    "stem-stylus-grid": "preusx/stem-stylus-grid#0.2.4",
+    "stem-stylus-utils": "preusx/stem-stylus-utils#0.4.15"
   },
   "ignore": [
     "**/.*",
