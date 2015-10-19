@@ -2,45 +2,6 @@
  * Mxins
  * ======================================================================== */
 
-typo_font_scale()
-    typo = typo-settings()
-
-    return typo.scale
-
-
-typo_line_scale(line='base')
-    typo = typo-settings()
-
-    if is_string(line) || is_ident(line)
-        return typo.line[line]
-    else if is_unit(line)
-        return line
-    else
-        return typo.line.base
-
-
-typo_scaled(size=0)
-    typo = typo-settings()
-    $unit = unit(size)
-
-    if $unit != ''
-        px_size = to_px(size)
-        size = px_size / typo.base
-        size = ceil(math(size, 'log') / math(typo_font_scale(), 'log'))
-
-    return round(typo.base * (typo_font_scale() ** size))
-
-
-typo_line(font_size, line=null)
-    typo = typo-settings()
-    line = typo_line_scale(line)
-
-    if unit(font_size) == ''
-        font_size = typo_scaled(font_size)
-
-    return grid_height(font_size * line)
-
-
 /**
  * Opentype ligatures
  *
@@ -86,72 +47,139 @@ typo-selection()
  */
 typo-hyphenation()
     -ms-word-break break-all
-        word-break break-all
-        word-break break-word // webkit
+    word-break break-all
+    word-break break-word // webkit
 
     -webkit-hyphens auto
-       -moz-hyphens auto
-        -ms-hyphens auto
-         -o-hyphens auto
-            hyphens auto // none, auto, <number>
+    -moz-hyphens auto
+    -ms-hyphens auto
+    -o-hyphens auto
+    hyphens auto // none, auto, <number>
 
     -webkit-hyphenate-before 2
     -webkit-hyphenate-after  3
     hyphenate-lines          3
 
 
-typo-line(font_size=null, line=null)
-    if font_size == null
-        font_size = @font-size
+
+typo_font_scale()
+    typo = typo-settings()
+
+    return typo.scale
+
+
+typo_line_scale(line='base')
+    typo = typo-settings()
+
+    if is_string(line) || is_ident(line)
+        return typo.line[line]
+    else if is_unit(line)
+        return line
     else
-        if unit(font_size) == ''
-            font_size = typo_scaled(font_size)
-
-        font-size font_size
-
-    line-height typo_line(font_size, line)
+        return typo.line.base
 
 
+typo_scaled(size=0)
+    typo = typo-settings()
+
+    if is_string(size) || is_ident(size)
+        size = typo.size[size]
+
+    $unit = unit(size)
+
+    if $unit != ''
+        px_size = to_px(size)
+        size = px_size / typo.base
+        size = ceil(math(size, 'log') / math(typo_font_scale(), 'log'))
+
+    return round(typo.base * (typo_font_scale() ** size))
+
+
+/**
+ * Getting the relative size, based on the different font-size.
+ */
+typo_relative(base, current=@font-size, ratio=1)
+    typo = typo-settings()
+
+    return to_unit((to_px(base) ** 2 / to_px(current)) * ratio, typo.unit)
+
+
+typo_line(font_size, line=null)
+    typo = typo-settings()
+    line = typo_line_scale(line)
+
+    if unit(font_size) == ''
+        font_size = typo_scaled(font_size)
+
+    return to_px(grid_size(font_size * line))
+
+
+typo-line(font_size=null, line=null)
+    typo = typo-settings()
+
+    if font_size == null
+        font_size = to_px(@font-size, typo.base)
+    else
+        font_size = to_px(typo_scaled(font_size))
+
+        font-size: to_unit(font_size, typo.unit, typo.base)
+
+    line-height: to_unit(typo_line(font_size, line), typo.unit, font_size)
+
+
+//
+// TODO: Make baseline of two lines of text identical.
+//       Now there is a trouble with a several pixels difference.
+//
 typo-inline(from, to)
     // f  -  Font size
     // l  -  Line height
     // sp -  Empty space difference
+    typo = typo-settings()
 
-    if to
-        if is_array(from)
-            f_f = unit(from[0]) == '' ? typo_scaled(from[0]) : to_px(from[0])
-            l_f = unit(from[1]) == '' ? grid_height(from[1]) : to_px(from[1])
-        else
-            f_f = unit(from) == '' ? typo_scaled(from) : to_px(from)
-            l_f = typo_line(from)
-
-        if is_array(to)
-            f_t = unit(to[0]) == '' ? typo_scaled(to[0]) : to_px(to[0])
-            l_t = unit(to[1]) == '' ? grid_height(to[1]) : to_px(to[1])
-        else
-            f_t = unit(to) == '' ? typo_scaled(to) : to_px(to)
-            l_t = typo_line(to)
-    else
-        from = at_property('font-size')
+    if !to
         to = from
+        from = at_property('font-size')
 
-    sp_f = l_f - f_f
-    sp_t = l_t - f_t
+    if is_array(from)
+        f_f = to_px(unit(from[0]) == '' ? typo_scaled(from[0]) : to_px(from[0]))
+        l_f = to_px(unit(from[1]) == '' ? grid_size(from[1]) : to_px(from[1]))
+    else
+        f_f = to_px(unit(from) == '' ? typo_scaled(from) : to_px(from))
+        l_f = to_px(typo_line(from))
 
-    sp = max(sp_f, sp_t)
-    sp -= min(sp_f, sp_t)
+    if is_array(to)
+        f_t = to_px(unit(to[0]) == '' ? typo_scaled(to[0]) : to_px(to[0]))
+        l_t = to_px(unit(to[1]) == '' ? grid_size(to[1]) : to_px(to[1]))
+    else
+        f_t = to_px(unit(to) == '' ? typo_scaled(to) : to_px(to))
+        l_t = to_px(typo_line(to))
 
     pt = at_partial('padding-top')
     pb = at_partial('padding-bottom')
+    un = unit(pt)
+    un = !!un ? un : typo.unit
+    df = l_t - l_f
+    ddf = ((l_t / f_t) + (l_f / f_f)) / 2
 
-    padding-top pt + floor(sp / 2) + abs(f_f - f_t)
-    padding-bottom pb + ceil(sp / 2)
+    offset = ceil(df / ddf + (l_t / f_t) - (l_f / f_f))
+
+    pt = to_px(pt ? pt : 0) + offset
+    pb = to_px(pb ? pb : 0) + df - offset
+
+    padding-top to_unit(pt, un, f_f)
+    padding-bottom to_unit(pb, un, f_f)
 
 
-typo-paragraph(font_size=null)
+typo-paragraph(font_size=null, line=null, top=1, right=null, bottom=top, left=right)
     typo = typo-settings()
-    font_size = typo.base if font_size == null
+    typo-line(font_size, line)
 
-    grid-offset-v(typo_line(typo.base))
+    offsets = {top: top, left: left, right: right, bottom: bottom}
+    font_size = to_px(@font-size)
+    offset = grid_size(to_px(typo_relative(typo.base), font_size), true)
+    offset = to_unit(offset, typo.unit, font_size)
 
-    typo-line(font_size)
+    for i in offsets
+        if offsets[i] > 0
+            margin-{i} offset * offsets[i]
