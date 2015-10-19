@@ -1,0 +1,336 @@
+/**
+ * Variables
+ * ======================================================================== */
+
+// Serif: Garamond, Georgia, Crimson Text, Palatino Linotype, Book Antiqua,
+//        Palatino, Merriweather,
+// Sans: Geneva
+//
+// Typography articles:
+// http://practicaltypography.com/ - article, lots of custom font-families
+// http://practicaltypography.com/system-fonts.html - font family usage article
+// http://practicaltypography.com/mb-lectures-and-articles.html - list of the typo articles
+
+
+/**
+ * Mixins
+ * ======================================================================== */
+
+typo-lang(langs=('en' 'ru'))
+    for i in langs
+        html[lang={i}]
+          hyphenate-dictionary url('hyph_' + i + '.dic')
+
+
+typo-text()
+    typo = typo-settings()
+
+    typo-line(typo.base)
+    @p font
+        family: typo.family.body
+
+    // Paragraph
+    h1, h2, h3, h4, h5, h6
+    blockquote
+    hr
+    ol, ul
+    dl, dt, dd
+    address
+    figure
+    figcaption
+    table
+    p
+        margin-v 1em
+
+        typo-paragraph(0)
+        // typo-hyphenation()
+        @p text
+            indent 0
+
+        widows 4
+        orphans 4
+
+        // &:not([class])
+        //     &:first-child
+        //         margin-top 0
+
+        //     &:last-child
+        //         margin-bottom 0
+
+
+    // Headings
+    h1, h2, h3, h4, h5, h6
+        page-break-before always
+        page-break-inside avoid
+
+        @p font
+            letter-spacing: typo.letter-spacing.tight
+            weight: typo.weight.body
+            family: typo.family.heading
+
+    for i in (6 5 4 3 2 1)
+        h{i}
+            typo-paragraph(5 - i, top:2, bottom:1)
+
+    h6
+        letter-spacing: typo.letter-spacing.wide
+
+        @p text
+            transform uppercase
+
+    // Quotation
+    blockquote
+        margin-h 3ch
+
+    cite
+        font-style normal
+
+    q
+        display inline
+
+        font-style italic
+
+        for lang, qts in typo.quotes
+            if lang == '_'
+                quotes qts
+            else
+                html[lang={lang}] &
+                    quotes qts
+
+        &:before
+            content open-quote
+
+        &:after
+            content close-quote
+
+
+    // Line
+    hr
+        //
+
+    // Lists
+    // Ordered/Unordered lists
+    list-styles = ( \
+            (''   armenian) \
+            ('1'  decimal) \
+            ('01' decimal-leading-zero) \
+            (''   georgian) \
+            (''   lower-greek) \
+            ('a'  lower-latin) \
+            ('i'  lower-roman) \
+            ('A'  upper-latin) \
+            ('I'  upper-roman) \
+        )
+
+    ol, ul
+        padding-left 3ch
+
+    li
+        margin 0
+
+    ol
+        counter-reset list__item
+
+        & > li
+            counter-increment list__item
+
+    ol-class = bem_b('ol', $bem.p.tag)
+    .{ol-class}
+        &{$bem.s.m}
+
+            &unstyled
+                // padding 0
+
+                list-style none !important
+
+            &nested
+                list-style none !important
+
+                & li
+                & li ol li
+                    position relative
+
+                    &:before
+                        display block
+                        position absolute
+                        right 100%
+                        padding-right 1ch
+
+                        text-align right
+                        word-break normal
+
+                        content counters(list__item, ".") "."
+
+                & > li
+                    & > ul,
+                    & > ol
+                        margin-top 0
+                        margin-bottom 0
+
+                & li ol
+                    list-style none !important
+
+                & li ol li
+                    &:before
+                        content counters(list__item, ".") ""
+
+            for i in list-styles
+                &type_{i[1]}
+                    list-style-type i[1]
+
+                // &type_{i[1]}.{ol-class}{$bem.s.m}nested
+                //     & > li
+                //         &:before
+                //             content counters(list__item, ".", i[1]) "."
+    // for i in list-styles
+    //     if !!i[0]
+    //         & ol[type={'"'+i[0]+'"'}].{ol-class}{$bem.s.m}nested
+    //             & > li
+    //                 &:before
+    //                     content counters(list__item, ".", i[1]) "."
+
+
+    // Small text
+    small
+        font-size 85%
+        line-height 1
+
+
+    // Definition lists
+    dl, dt, dd
+        //
+
+    dt
+        margin-bottom 0
+
+        font-weight bold
+
+    dd
+        margin-top 0
+        margin-h 0
+
+
+    // Subscript and superscript
+    sub, sup
+        margin -1em 0
+        line-height 1px
+
+
+    // Text decoration
+    b,
+    strong
+        font-weight bold
+
+    i,
+    em,
+    var,
+    dfn // Definition is usually marking with italic font style
+        font-style italic
+
+    s,
+    strike,
+    del
+        text-decoration line-through
+
+    tt,
+    code,
+    output,
+    pre,
+    samp,
+    kbd
+        font-family: typo.family.mono
+        font-size inherit
+
+    u,
+    ins
+        text-decoration underline
+
+
+    // Abbreviation
+    abbr
+        border-bottom 1px dashed #0006
+
+        cursor help
+
+
+    // Address
+    address
+        font-style normal
+
+
+    // links
+    a
+        font-family inherit
+        text-decoration underline
+        color inherit
+
+        cursor pointer
+
+        &:hover
+            text-decoration none
+
+
+    // Graphics
+    counter-reset figure__item
+
+    figure
+        @extends $clearfix
+
+        margin-h 0
+        padding 0
+
+        counter-increment figure__item
+
+        & > img
+            max-width 100%
+
+            vertical-align middle
+
+    figcaption
+        margin-bottom 0
+
+        if !!typo.figcaption.prefix
+            &:before
+                opacity .75
+
+                content: typo.figcaption.prefix " " counters(figure__item, ".") ". "
+
+
+    // Tables
+    table
+        width 100%
+
+        border 0 solid transparent
+        border-collapse collapse
+
+        font-size inherit
+        text-align left
+        vertical-align middle
+
+        caption,
+        td,
+        th,
+        tr
+            border 0 solid transparent
+
+            font-size inherit
+            vertical-align middle
+
+            &:not([align])
+                text-align left
+
+        th
+            font-weight bold
+
+
+
+typo-init()
+    $typo-container
+        typo = typo-settings()
+
+        margin-h auto
+        width: typo.line-length
+
+
+    $typo-text
+        typo-text()
