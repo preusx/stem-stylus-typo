@@ -106,14 +106,14 @@ block_storage('__stem__typo-settings', {
         }
 
         responsive:  true
-    }, true)
+    }, default:true)
 
 
 /**
  * Mixins
  * ======================================================================== */
 
-typo-settings(data=false, default=false, fallback=false)
-    temp = block_storage('__stem__typo-settings', data, default, fallback)
+typo-settings(data=false, base=false, fallback=false, dafault=false)
+    temp = block_storage('__stem__typo-settings', data, base, fallback, dafault)
 
     return temp
