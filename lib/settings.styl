@@ -10,7 +10,7 @@ $_typo_font_family = {
 
 
 block_storage('__stem__typo-settings', {
-        base:    $root_font_size,
+        base:    Base.font-size,
         unit:    'em'
 
         line:    {
@@ -37,21 +37,22 @@ block_storage('__stem__typo-settings', {
             'giant':       5
             'mega':        6
 
-            'small':       1/2
+            'small':       -1
             'body':        0
             'medium':      0
             'regular':     0
-            'caption':     1/2
+            'caption':     -1
             'subhead':     1
             'lead':        1
             'title':       2
             'headline':    3
 
             'n':           0px
-            's':           1/2
-            'l':           4
-            'xl':          5
-            'xxl':         6
+            's':           -1
+            'm':           0
+            'l':           1
+            'xl':          2
+            'xxl':         3
         }
 
         weight: {
@@ -106,14 +107,14 @@ block_storage('__stem__typo-settings', {
         }
 
         responsive:  true
-    }, true)
+    }, default:true)
 
 
 /**
  * Mixins
  * ======================================================================== */
 
-typo-settings(data=false, default=false, fallback=false)
-    temp = block_storage('__stem__typo-settings', data, default, fallback)
+typo-settings(data=false, base=false, fallback=false, dafault=false)
+    temp = block_storage('__stem__typo-settings', data, base, fallback, dafault)
 
     return temp
