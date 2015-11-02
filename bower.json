@@ -10,14 +10,14 @@
   ],
   "dependencies": {
     "stem-stylus-bem": "preusx/stem-stylus-bem#0.1.7",
-    "stem-stylus-grid": "preusx/stem-stylus-grid#0.2.5",
+    "stem-stylus-grid": "preusx/stem-stylus-grid#0.2.6",
     "stem-stylus-extensions": "preusx/stem-stylus-extensions#0.1.0",
     "stem-stylus-utils": "preusx/stem-stylus-utils#0.5.0",
     "stem-stylus-responsive": "preusx/stem-stylus-responsive#0.1.0"
   },
   "devDependencies": {
     "stem-stylus-bem": "preusx/stem-stylus-bem#0.1.7",
-    "stem-stylus-grid": "preusx/stem-stylus-grid#0.2.5",
+    "stem-stylus-grid": "preusx/stem-stylus-grid#0.2.6",
     "stem-stylus-extensions": "preusx/stem-stylus-extensions#0.1.0",
     "stem-stylus-utils": "preusx/stem-stylus-utils#0.5.0",
     "stem-stylus-responsive": "preusx/stem-stylus-responsive#0.1.0"
