@@ -25,7 +25,7 @@ typo-lang(langs=('en' 'ru'))
 typo-text()
     typo = typo-settings()
 
-    typo-line(1)
+    typo-line('body')
     @p font
         family: typo.family.body
 
@@ -214,6 +214,7 @@ typo-text()
     sub, sup
         margin -1em 0
         line-height 1px
+        font-size typo_scaled('tiny')
 
 
     // Text decoration

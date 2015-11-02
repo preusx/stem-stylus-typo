@@ -77,13 +77,15 @@ typo_scaled(size=1)
     $unit = unit(size)
 
     if $unit != ''
-        // scale_geometric-progression(0.125em, i, 2)
-        size = scale_arithmetic-progression_reverse(typo.scale.start,
+        size = scale_modular_reverse(typo.scale.start,
             to_unit(size, typo.unit, typo.base), typo.scale.rate)
 
     size += typo.scale.offset
+    fs = typo.scale.add + scale_modular(typo.scale.start, size, typo.scale.rate)
+    coerce = (size > 1 ? .25 : .125)
+    fsd = fs % coerce
 
-    return typo.scale.add + scale_arithmetic-progression(typo.scale.start, size, typo.scale.rate)
+    return fs - (fsd < coerce / 3 ? fsd : fsd - coerce)
 
 
 /**
