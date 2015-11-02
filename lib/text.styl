@@ -25,7 +25,7 @@ typo-lang(langs=('en' 'ru'))
 typo-text()
     typo = typo-settings()
 
-    typo-line(typo.base)
+    typo-line(1)
     @p font
         family: typo.family.body
 
@@ -42,7 +42,7 @@ typo-text()
     p
         margin-v 1em
 
-        typo-paragraph(0)
+        typo-paragraph(1)
         // typo-hyphenation()
         @p text
             indent 0
@@ -70,7 +70,7 @@ typo-text()
 
     for i in (6 5 4 3 2 1)
         h{i}
-            typo-paragraph(5 - i, top:2, bottom:1)
+            typo-paragraph(6 - i, line:typo.line.heading, top:2, bottom:1)
 
     h6
         letter-spacing: typo.letter-spacing.wide
@@ -134,9 +134,9 @@ typo-text()
         & > li
             counter-increment list__item
 
-    ol-class = bem_b('ol', $bem.p.tag)
+    ol-class = bem_b('ol', Bem.p.tag)
     .{ol-class}
-        &{$bem.s.m}
+        &{Bem.s.m}
 
             &unstyled
                 // padding 0
@@ -178,13 +178,13 @@ typo-text()
                 &type_{i[1]}
                     list-style-type i[1]
 
-                // &type_{i[1]}.{ol-class}{$bem.s.m}nested
+                // &type_{i[1]}.{ol-class}{Bem.s.m}nested
                 //     & > li
                 //         &:before
                 //             content counters(list__item, ".", i[1]) "."
     // for i in list-styles
     //     if !!i[0]
-    //         & ol[type={'"'+i[0]+'"'}].{ol-class}{$bem.s.m}nested
+    //         & ol[type={'"'+i[0]+'"'}].{ol-class}{Bem.s.m}nested
     //             & > li
     //                 &:before
     //                     content counters(list__item, ".", i[1]) "."
@@ -192,7 +192,7 @@ typo-text()
 
     // Small text
     small
-        font-size 85%
+        font-size typo_scaled('small')
         line-height 1
 
 

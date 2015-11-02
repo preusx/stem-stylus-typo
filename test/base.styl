@@ -7,16 +7,16 @@ for $i in (1 2 3 4 5 10px 20px 30px 40px)
         font-size typo_scaled($i)
 
 // @expects
-.block{font-size:21px}
-.block{font-size:28px}
-.block{font-size:38px}
-.block{font-size:51px}
-.block{font-size:67px}
+.block{font-size:1rem}
+.block{font-size:1.25rem}
+.block{font-size:1.5rem}
+.block{font-size:1.75rem}
+.block{font-size:2rem}
 
-.block{font-size:12px}
-.block{font-size:21px}
-.block{font-size:38px}
-.block{font-size:51px}
+.block{font-size:.75rem}
+.block{font-size:1.25rem}
+.block{font-size:2rem}
+.block{font-size:2.5rem}
 
 
 // @it Line
@@ -27,15 +27,15 @@ for $i in (1 2 3 4 5 10px 20px 30px 40px)
 
 // @expects
 
-.block{font-size:1.3125em;line-height:1.428571428571429em}
-.block{font-size:1.75em;line-height:1.285714285714286em}
-.block{font-size:2.375em;line-height:1.263157894736842em}
-.block{font-size:3.1875em;line-height:1.294117647058824em}
-.block{font-size:4.1875em;line-height:1.253731343283582em}
-.block{font-size:.75em;line-height:1.5em}
-.block{font-size:1.3125em;line-height:1.428571428571429em}
-.block{font-size:2.375em;line-height:1.263157894736842em}
-.block{font-size:3.1875em;line-height:1.294117647058824em}
+.block{font-size:1rem;     line-height:1.25}
+.block{font-size:1.25rem;  line-height:1.25}
+.block{font-size:1.5rem;   line-height:1.25}
+.block{font-size:1.75rem;  line-height:1.25}
+.block{font-size:2rem;     line-height:1.25}
+.block{font-size:.75rem;   line-height:1.25}
+.block{font-size:1.25rem;  line-height:1.25}
+.block{font-size:2rem;     line-height:1.25}
+.block{font-size:2.5rem;   line-height:1.25}
 
 
 // @it Paragraph
@@ -48,11 +48,12 @@ for $i in 0...(length($list) - 1)
 
 // @expects
 
-.block{font-size:1.3125em;line-height:1.428571428571429em;margin-top:.5714285714285714em;margin-bottom:.5714285714285714em}
-.block{font-size:1.75em;line-height:1.285714285714286em;margin-top:.42857142857142855em;margin-bottom:.42857142857142855em}
-.block{font-size:2.375em;line-height:1.263157894736842em;margin-top:.3157894736842105em;margin-bottom:.3157894736842105em}
-.block{font-size:3.1875em;line-height:1.294117647058824em;margin-top:.23529411764705882em;margin-bottom:.23529411764705882em}
-.block{font-size:4.1875em;line-height:1.253731343283582em;margin-top:.1791044776119403em;margin-bottom:.1791044776119403em}
-.block{font-size:.75em;line-height:1.5em;margin-top:1em;margin-bottom:1em}
-.block{font-size:1.3125em;line-height:1.428571428571429em;margin-top:.5714285714285714em;margin-bottom:.5714285714285714em}
-.block{font-size:2.375em;line-height:1.263157894736842em;margin-top:.3157894736842105em;margin-bottom:.3157894736842105em}
+
+.block{font-size:1rem;line-height:1.25;margin-top:1rem;margin-bottom:1rem}
+.block{font-size:1.25rem;line-height:1.25;margin-top:1rem;margin-bottom:1rem}
+.block{font-size:1.5rem;line-height:1.25;margin-top:1rem;margin-bottom:1rem}
+.block{font-size:1.75rem;line-height:1.25;margin-top:1rem;margin-bottom:1rem}
+.block{font-size:2rem;line-height:1.25;margin-top:1rem;margin-bottom:1rem}
+.block{font-size:.75rem;line-height:1.25;margin-top:1rem;margin-bottom:1rem}
+.block{font-size:1.25rem;line-height:1.25;margin-top:1rem;margin-bottom:1rem}
+.block{font-size:2rem;line-height:1.25;margin-top:1rem;margin-bottom:1rem}

@@ -2,24 +2,30 @@
  * Variables
  * ======================================================================== */
 
-$_typo_font_family = {
-    sans:   list-separator-set(('Helvetica Neue' 'Helvetica' 'Arial' sans-serif), true)
-    serif:  list-separator-set(('Georgia' 'Times New Roman' 'Times' serif), true)
-    mono:   list-separator-set(('Consolas' 'Courier New' monospace), true)
+_TypoBaseFontFamily = {
+    sans:   unquote("'Helvetica Neue', 'Helvetica', 'Arial', sans-serif")
+    serif:  unquote("'Georgia', 'Times New Roman', 'Times', serif")
+    mono:   unquote("'Consolas', 'Courier New', monospace")
 }
 
 
 block_storage('__stem__typo-settings', {
         base:    Base.font-size,
-        unit:    'em'
+        unit:    'rem'
 
         line:    {
-            base:    1.2
-            heading: 1.2
-        },
+            base:    1.25
+            heading: 1.25
+        }
+
+        scale: {
+            rate: .25rem
+            start: 1rem
+            offset: 0
+            add: 0
+        }
 
         indent: 1em
-        scale:   1.333                  // "Prefect fourth" scale
         line-length: 65ch               // 45-90 characters wide
 
         letter-spacing: {
@@ -33,26 +39,26 @@ block_storage('__stem__typo-settings', {
 
         size: {
             'none':        0px
-            'big':         4
-            'giant':       5
-            'mega':        6
+            'big':         6
+            'giant':       7
+            'mega':        8
 
-            'small':       -1
-            'body':        0
-            'medium':      0
-            'regular':     0
-            'caption':     -1
-            'subhead':     1
-            'lead':        1
-            'title':       2
-            'headline':    3
+            'small':       0
+            'body':        1
+            'medium':      1
+            'regular':     1
+            'caption':     0
+            'subhead':     2
+            'lead':        2
+            'title':       3
+            'headline':    5
 
             'n':           0px
-            's':           -1
-            'm':           0
-            'l':           1
-            'xl':          2
-            'xxl':         3
+            's':           0
+            'm':           1
+            'l':           2
+            'xl':          3
+            'xxl':         5
         }
 
         weight: {
@@ -76,11 +82,11 @@ block_storage('__stem__typo-settings', {
         }
 
         family: {
-            'body':        $_typo_font_family.sans
-            'primary':     $_typo_font_family.sans
-            'secondary':   $_typo_font_family.sans
-            'heading':     $_typo_font_family.sans
-            'mono':        $_typo_font_family.mono
+            'body':        _TypoBaseFontFamily.sans
+            'primary':     _TypoBaseFontFamily.sans
+            'secondary':   _TypoBaseFontFamily.sans
+            'heading':     _TypoBaseFontFamily.sans
+            'mono':        _TypoBaseFontFamily.mono
         }
 
         quotes: {
