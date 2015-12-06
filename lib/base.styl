@@ -59,18 +59,3 @@ typo-hyphenation()
     -webkit-hyphenate-before 2
     -webkit-hyphenate-after  3
     hyphenate-lines          3
-
-
-
-typo-paragraph(font_size=null, line=null, top=null, right=null, bottom=top, left=right)
-    if font_size != null
-        font-size: typo-scaled(font_size)
-
-    line-height: typo-line(line)
-
-    offsets = {top: top, left: left, right: right, bottom: bottom}
-    offset = typo-scaled(1)
-
-    for i in offsets
-        if offsets[i] > 0
-            margin-{i} offset * offsets[i]
