@@ -106,18 +106,20 @@ typo-text()
     li
         margin 0
 
+    ul
+        list-style disc
+
     ol
+        list-style decimal
         counter-reset list__item
 
         & > li
             counter-increment list__item
 
-    @b ol
+    .ol
         @m
             &unstyled
-                // padding 0
-
-                list-style none !important
+                list-style none
 
             &nested
                 list-style none !important
@@ -295,7 +297,6 @@ typo-text-spacing()
     blockquote
     hr
     ol, ul
-    dl, dt, dd
     address
     figure
     figcaption
