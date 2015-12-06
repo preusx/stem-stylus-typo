@@ -2,28 +2,38 @@
 
 // @it Scale function
 
-for $i in (1 2 3 4 5 10px 20px 30px 40px)
+for $i in (-2 -1 0 1 2 3 4 5 6 7 8 9 10 10px 20px 30px 40px)
     .block
-        font-size typo_scaled($i)
+        font-size typo-scaled($i)
+        font-size to-px(@font-size)
 
 // @expects
-.block{font-size:1rem}
-.block{font-size:1.25rem}
-.block{font-size:1.5rem}
-.block{font-size:1.75rem}
-.block{font-size:2rem}
 
-.block{font-size:.75rem}
-.block{font-size:1.25rem}
-.block{font-size:2rem}
-.block{font-size:2.5rem}
+.block{font-size:.625rem;  font-size:10px}
+.block{font-size:.75rem;   font-size:12px}
+.block{font-size:.875rem;  font-size:14px}
+.block{font-size:1rem;     font-size:16px}
+.block{font-size:1.25rem;  font-size:20px}
+.block{font-size:1.5rem;   font-size:24px}
+.block{font-size:1.75rem;  font-size:28px}
+.block{font-size:2rem;     font-size:32px}
+.block{font-size:2.5rem;   font-size:40px}
+.block{font-size:3rem;     font-size:48px}
+.block{font-size:3.5rem;   font-size:56px}
+.block{font-size:4rem;     font-size:64px}
+.block{font-size:4.75rem;  font-size:76px}
+
+.block{font-size:.625rem;  font-size:10px}
+.block{font-size:1.25rem;  font-size:20px}
+.block{font-size:2rem;     font-size:32px}
+.block{font-size:2.5rem;   font-size:40px}
 
 
-// @it Line
+// @it Paragraph
 
 for $i in (1 2 3 4 5 10px 20px 30px 40px)
     .block
-        typo-line($i)
+        typo-paragraph($i)
 
 // @expects
 
@@ -32,28 +42,7 @@ for $i in (1 2 3 4 5 10px 20px 30px 40px)
 .block{font-size:1.5rem;   line-height:1.25}
 .block{font-size:1.75rem;  line-height:1.25}
 .block{font-size:2rem;     line-height:1.25}
-.block{font-size:.75rem;   line-height:1.25}
+.block{font-size:.625rem;  line-height:1.25}
 .block{font-size:1.25rem;  line-height:1.25}
 .block{font-size:2rem;     line-height:1.25}
 .block{font-size:2.5rem;   line-height:1.25}
-
-
-// @it Paragraph
-
-$list = (1 2 3 4 5 10px 20px 30px 40px)
-
-for $i in 0...(length($list) - 1)
-    .block
-        typo-paragraph($list[$i])
-
-// @expects
-
-
-.block{font-size:1rem;line-height:1.25;margin-top:1rem;margin-bottom:1rem}
-.block{font-size:1.25rem;line-height:1.25;margin-top:1rem;margin-bottom:1rem}
-.block{font-size:1.5rem;line-height:1.25;margin-top:1rem;margin-bottom:1rem}
-.block{font-size:1.75rem;line-height:1.25;margin-top:1rem;margin-bottom:1rem}
-.block{font-size:2rem;line-height:1.25;margin-top:1rem;margin-bottom:1rem}
-.block{font-size:.75rem;line-height:1.25;margin-top:1rem;margin-bottom:1rem}
-.block{font-size:1.25rem;line-height:1.25;margin-top:1rem;margin-bottom:1rem}
-.block{font-size:2rem;line-height:1.25;margin-top:1rem;margin-bottom:1rem}

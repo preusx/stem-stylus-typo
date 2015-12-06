@@ -16,18 +16,10 @@
  * Mixins
  * ======================================================================== */
 
-typo-lang(langs=('en' 'ru'))
-    for i in langs
-        html[lang={i}]
-          hyphenate-dictionary url('hyph_' + i + '.dic')
-
-
 typo-text()
-    typo = typo-settings()
-
-    typo-line('body')
-    @p font
-        family: typo.family.body
+    f-size: TypoConfig.base
+    f-family: TypoConfig.family.body
+    line-height typo-line('body')
 
     // Paragraph
     h1, h2, h3, h4, h5, h6
@@ -40,22 +32,11 @@ typo-text()
     figcaption
     table
     p
-        margin-v 1em
-
         typo-paragraph(1)
-        // typo-hyphenation()
-        @p text
-            indent 0
+        t-indent 0
 
         widows 4
         orphans 4
-
-        // &:not([class])
-        //     &:first-child
-        //         margin-top 0
-
-        //     &:last-child
-        //         margin-bottom 0
 
 
     // Headings
@@ -63,20 +44,17 @@ typo-text()
         page-break-before always
         page-break-inside avoid
 
-        @p font
-            letter-spacing: typo.letter-spacing.tight
-            weight: typo.weight.body
-            family: typo.family.heading
+        f-weight: TypoConfig.weight.body
+        f-family: TypoConfig.family.heading
+        letter-spacing: TypoConfig.letter-spacing.tight
 
     for i in (6 5 4 3 2 1)
         h{i}
-            typo-paragraph(6 - i, line:typo.line.heading, top:2, bottom:1)
+            typo-paragraph(6 - i, line:TypoConfig.line.heading)
 
     h6
-        letter-spacing: typo.letter-spacing.wide
-
-        @p text
-            transform uppercase
+        letter-spacing: TypoConfig.letter-spacing.wide
+        t-transform uppercase
 
     // Quotation
     blockquote
@@ -90,7 +68,7 @@ typo-text()
 
         font-style italic
 
-        for lang, qts in typo.quotes
+        for lang, qts in TypoConfig.quotes
             if lang == '_'
                 quotes qts
             else
@@ -134,10 +112,8 @@ typo-text()
         & > li
             counter-increment list__item
 
-    ol-class = bem_b('ol', Bem.p.tag)
-    .{ol-class}
-        &{Bem.s.m}
-
+    @b ol
+        @m
             &unstyled
                 // padding 0
 
@@ -156,7 +132,7 @@ typo-text()
                         right 100%
                         padding-right 1ch
 
-                        text-align right
+                        t-align right
                         word-break normal
 
                         content counters(list__item, ".") "."
@@ -178,21 +154,10 @@ typo-text()
                 &type_{i[1]}
                     list-style-type i[1]
 
-                // &type_{i[1]}.{ol-class}{Bem.s.m}nested
-                //     & > li
-                //         &:before
-                //             content counters(list__item, ".", i[1]) "."
-    // for i in list-styles
-    //     if !!i[0]
-    //         & ol[type={'"'+i[0]+'"'}].{ol-class}{Bem.s.m}nested
-    //             & > li
-    //                 &:before
-    //                     content counters(list__item, ".", i[1]) "."
-
 
     // Small text
     small
-        font-size typo_scaled('small')
+        font-size typo-scaled('small')
         line-height 1
 
 
@@ -214,7 +179,7 @@ typo-text()
     sub, sup
         margin -1em 0
         line-height 1px
-        font-size typo_scaled('tiny')
+        font-size typo-scaled('tiny')
 
 
     // Text decoration
@@ -231,7 +196,7 @@ typo-text()
     s,
     strike,
     del
-        text-decoration line-through
+        t-decoration line-through
 
     tt,
     code,
@@ -239,12 +204,12 @@ typo-text()
     pre,
     samp,
     kbd
-        font-family: typo.family.mono
+        font-family: TypoConfig.family.mono
         font-size inherit
 
     u,
     ins
-        text-decoration underline
+        t-decoration underline
 
 
     // Abbreviation
@@ -262,13 +227,13 @@ typo-text()
     // links
     a
         font-family inherit
-        text-decoration underline
+        t-decoration underline
         color inherit
 
         cursor pointer
 
         &:hover
-            text-decoration none
+            t-decoration none
 
 
     // Graphics
@@ -290,11 +255,11 @@ typo-text()
     figcaption
         margin-bottom 0
 
-        if !!typo.figcaption.prefix
+        if !!TypoConfig.figcaption.prefix
             &:before
                 opacity .75
 
-                content: typo.figcaption.prefix " " counters(figure__item, ".") ". "
+                content: TypoConfig.figcaption.prefix " " counters(figure__item, ".") ". "
 
 
     // Tables
@@ -305,7 +270,7 @@ typo-text()
         border-collapse collapse
 
         font-size inherit
-        text-align left
+        t-align left
         vertical-align middle
 
         caption,
@@ -318,20 +283,40 @@ typo-text()
             vertical-align middle
 
             &:not([align])
-                text-align left
+                t-align left
 
         th
             font-weight bold
 
 
 
+typo-text-spacing()
+    h1, h2, h3, h4, h5, h6
+    blockquote
+    hr
+    ol, ul
+    dl, dt, dd
+    address
+    figure
+    figcaption
+    table
+    p
+        mv: 1rem
+
+    h1, h2, h3, h4, h5, h6
+        mt: 2rem
+
+
+
 typo-init()
     $typo-container
-        typo = typo-settings()
-
         margin-h auto
-        width: typo.line-length
+        width: TypoConfig.line-length
 
 
     $typo-text
         typo-text()
+
+
+    $typo-text-spacing
+        typo-text-spacing()

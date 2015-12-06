@@ -8,8 +8,9 @@ _TypoBaseFontFamily = {
     mono:   unquote("'Consolas', 'Courier New', monospace")
 }
 
+TypoConfig = {}
 
-block_storage('__stem__typo-settings', {
+typo-config({
         base:    Base.font-size,
         unit:    'rem'
 
@@ -19,7 +20,7 @@ block_storage('__stem__typo-settings', {
         }
 
         scale: {
-            rate: 1.25
+            rate: 1.19
             start: 1rem
             offset: 0
             add: 0
@@ -116,14 +117,4 @@ block_storage('__stem__typo-settings', {
         }
 
         responsive:  true
-    }, default:true)
-
-
-/**
- * Mixins
- * ======================================================================== */
-
-typo-settings(data=false, base=false, fallback=false, dafault=false)
-    temp = block_storage('__stem__typo-settings', data, base, fallback, dafault)
-
-    return temp
+    })
