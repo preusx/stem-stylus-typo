@@ -116,7 +116,8 @@ typo-text()
         & > li
             counter-increment list__item
 
-    .ol
+    ol-class = bem-compose('ol', null, null, BEM.p.tag)
+    .{ol-class}
         @m
             &unstyled
                 list-style none
