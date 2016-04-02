@@ -17,9 +17,19 @@
  * ======================================================================== */
 
 typo-text()
-    f-size: TypoConfig.base
-    f-family: TypoConfig.family.body
-    line-height typo-line('body')
+    slctr = selector('&')
+
+    rt = @block {
+        f-size: TypoConfig.base
+        f-family: TypoConfig.family.body
+        line-height typo-line('body')
+    }
+
+    if !!slctr
+        {rt}
+    else
+        body
+            {rt}
 
     // Paragraph
     h1, h2, h3, h4, h5, h6
@@ -32,7 +42,7 @@ typo-text()
     figcaption
     table
     p
-        typo-paragraph(1)
+        typo-paragraph(1, null, 1)
         t-indent 0
 
         widows 4
