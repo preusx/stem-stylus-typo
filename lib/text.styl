@@ -43,10 +43,17 @@ typo-text()
     table
     p
         typo-paragraph(1, null, 1)
+        fs inherit
         t-indent 0
 
         widows 4
         orphans 4
+
+        &:first-child
+            mt 0
+
+        &:last-child
+            mb 0
 
 
     // Headings
@@ -54,7 +61,7 @@ typo-text()
         page-break-before always
         page-break-inside avoid
 
-        f-weight: TypoConfig.weight.body
+        f-weight: TypoConfig.weight.heading
         f-family: TypoConfig.family.heading
         letter-spacing: TypoConfig.letter-spacing.tight
 
@@ -272,7 +279,7 @@ typo-text()
             &:before
                 opacity .75
 
-                content: TypoConfig.figcaption.prefix " " counters(figure__item, ".") ". "
+                // content: TypoConfig.figcaption.prefix " " counters(figure__item, ".") ". "
 
 
     // Tables
