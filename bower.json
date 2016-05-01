@@ -1,6 +1,6 @@
 {
   "name": "stem-stylus-typo",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "main": "./index.styl",
   "author": "Alex Tkachenko <preusx.dev@gmail.com>",
   "license": "MIT",
@@ -9,14 +9,14 @@
     "index.styl"
   ],
   "dependencies": {
-    "stem-stylus-extensions": "preusx/stem-stylus-extensions#0.2.8",
-    "stem-stylus-responsive": "preusx/stem-stylus-responsive#0.2.5",
-    "stem-stylus-grid": "preusx/stem-stylus-grid#0.2.8"
+    "stem-stylus-extensions": "preusx/stem-stylus-extensions#0.2.9",
+    "stem-stylus-responsive": "preusx/stem-stylus-responsive#0.2.6",
+    "stem-stylus-grid": "preusx/stem-stylus-grid#0.2.9"
   },
   "devDependencies": {
-    "stem-stylus-extensions": "preusx/stem-stylus-extensions#0.2.8",
-    "stem-stylus-responsive": "preusx/stem-stylus-responsive#0.2.5",
-    "stem-stylus-grid": "preusx/stem-stylus-grid#0.2.8"
+    "stem-stylus-extensions": "preusx/stem-stylus-extensions#0.2.9",
+    "stem-stylus-responsive": "preusx/stem-stylus-responsive#0.2.6",
+    "stem-stylus-grid": "preusx/stem-stylus-grid#0.2.9"
   },
   "ignore": [
     "**/.*",
